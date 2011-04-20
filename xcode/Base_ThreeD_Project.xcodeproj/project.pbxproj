@@ -24,7 +24,6 @@
 		DF1DBB7312E4DA60007C772B /* BasicBlender_frag.glsl in Resources */ = {isa = PBXBuildFile; fileRef = DF1DBB7112E4DA60007C772B /* BasicBlender_frag.glsl */; };
 		DF1DBB7412E4DA60007C772B /* BasicBlender_vert.glsl in Resources */ = {isa = PBXBuildFile; fileRef = DF1DBB7212E4DA60007C772B /* BasicBlender_vert.glsl */; };
 		DF1DBB8912E4E207007C772B /* noise.png in Resources */ = {isa = PBXBuildFile; fileRef = DF1DBB8812E4E207007C772B /* noise.png */; };
-		DF55643012DF85D400A771F8 /* SSAO_frag.glsl in Resources */ = {isa = PBXBuildFile; fileRef = DF55642E12DF85D400A771F8 /* SSAO_frag.glsl */; };
 		DF55643112DF85D400A771F8 /* SSAO_vert.glsl in Resources */ = {isa = PBXBuildFile; fileRef = DF55642F12DF85D400A771F8 /* SSAO_vert.glsl */; };
 		DF5A438A12E746DC00DC60DB /* random.png in Resources */ = {isa = PBXBuildFile; fileRef = DF5A438912E746DC00DC60DB /* random.png */; };
 		DF6ABA4212E5D27200E9941A /* SSAOL_frag.glsl in Resources */ = {isa = PBXBuildFile; fileRef = DF6ABA4112E5D27200E9941A /* SSAOL_frag.glsl */; };
@@ -59,7 +58,6 @@
 		DF1DBB7212E4DA60007C772B /* BasicBlender_vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = BasicBlender_vert.glsl; sourceTree = "<group>"; };
 		DF1DBB8812E4E207007C772B /* noise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noise.png; sourceTree = "<group>"; };
 		DF55614F12DE60D800A771F8 /* Resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resources.h; sourceTree = "<group>"; };
-		DF55642E12DF85D400A771F8 /* SSAO_frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SSAO_frag.glsl; sourceTree = "<group>"; };
 		DF55642F12DF85D400A771F8 /* SSAO_vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SSAO_vert.glsl; sourceTree = "<group>"; };
 		DF5A438912E746DC00DC60DB /* random.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = random.png; sourceTree = "<group>"; };
 		DF6ABA4112E5D27200E9941A /* SSAOL_frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SSAOL_frag.glsl; sourceTree = "<group>"; };
@@ -204,7 +202,6 @@
 				DF1DBB7212E4DA60007C772B /* BasicBlender_vert.glsl */,
 				DF1DBB6C12E4D935007C772B /* NormalDepthTexCreate_frag.glsl */,
 				DF1DBB6D12E4D935007C772B /* NormalDepthTexCreate_vert.glsl */,
-				DF55642E12DF85D400A771F8 /* SSAO_frag.glsl */,
 				DF6ABA4112E5D27200E9941A /* SSAOL_frag.glsl */,
 				DF55642F12DF85D400A771F8 /* SSAO_vert.glsl */,
 			);
@@ -263,7 +260,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				00CCAF15116A9FEE008396D5 /* CinderApp.icns in Resources */,
-				DF55643012DF85D400A771F8 /* SSAO_frag.glsl in Resources */,
 				DF55643112DF85D400A771F8 /* SSAO_vert.glsl in Resources */,
 				DF1DBB6E12E4D935007C772B /* NormalDepthTexCreate_frag.glsl in Resources */,
 				DF1DBB6F12E4D935007C772B /* NormalDepthTexCreate_vert.glsl in Resources */,

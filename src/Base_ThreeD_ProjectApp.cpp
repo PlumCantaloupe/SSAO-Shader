@@ -28,6 +28,7 @@ enum
 	SHOW_FINAL_SCENE
 };
 
+//being lazy and keeping not putting header in another file
 class Base_ThreeD_ProjectApp : public AppBasic 
 {
 	public:
@@ -42,15 +43,17 @@ class Base_ThreeD_ProjectApp : public AppBasic
 		void mouseDown( MouseEvent event );	
 		void keyDown( app::KeyEvent event ); 
 	
+        //render functions ( when looking to optimize GPU look here ... )
 		void drawTestObjects();
-		void initShaders();
-		void initFBOs();
 		void renderSceneToFBO();
-		void renderScreenSpace();
 		void renderNormalsDepthToFBO();
 		void renderSSAOToFBO();	
 		void pingPongBlur();	
-	
+        void renderScreenSpace();
+        
+        void initShaders();
+        void initFBOs();
+    
 	protected:
 	
 		int RENDER_MODE;
@@ -61,11 +64,6 @@ class Base_ThreeD_ProjectApp : public AppBasic
 		float				mCurrFramerate;
 		bool				mLightingOn;
 		bool				mViewFromLight;
-		bool				mRenderMode0;
-		bool				mRenderMode1;
-		bool				mRenderMode2;
-		bool				mRenderMode3;
-		bool				mRenderMode4;
 	
 		//objects
 		gl::DisplayList		mTorus, mBoard, mBox, mSphere;
@@ -96,15 +94,21 @@ class Base_ThreeD_ProjectApp : public AppBasic
 		gl::GlslProg		mBasicBlender;
 		gl::GlslProg		mHBlurShader;
 		gl::GlslProg		mVBlurShader;
-	
-		
-	
-	public:
 };
 
+/* 
+ * @Description: constructor
+ * @param: none
+ * @return: none
+ */
 Base_ThreeD_ProjectApp::Base_ThreeD_ProjectApp()
 {}
 
+/* 
+ * @Description: deconstructor ( called when program exits )
+ * @param: none
+ * @return: none
+ */
 Base_ThreeD_ProjectApp::~Base_ThreeD_ProjectApp()
 {
 	delete mCam;
@@ -112,6 +116,11 @@ Base_ThreeD_ProjectApp::~Base_ThreeD_ProjectApp()
 	delete mLightRef;
 }
 
+/* 
+ * @Description: set basic app settings here
+ * @param: Settings ( pointer to base app settings )
+ * @return: none
+ */
 void Base_ThreeD_ProjectApp::prepareSettings( Settings *settings )
 {
 	settings->setWindowSize( 720, 486 );		
@@ -122,35 +131,30 @@ void Base_ThreeD_ProjectApp::prepareSettings( Settings *settings )
 	//settings->enableSecondaryDisplayBlanking( false );
 }
 
+/* 
+ * @Description: setup function ( more aesthetic as could be in constructor here )
+ * @param: none
+ * @return: none
+ */
 void Base_ThreeD_ProjectApp::setup()
 {
 	RENDER_MODE = 0;
 	
 	glEnable( GL_LIGHTING );
 	glEnable( GL_DEPTH_TEST );
-	glEnable(GL_RESCALE_NORMAL);
-//	glEnable(GL_POLYGON_SMOOTH);
-//	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-//	glEnable(GL_COLOR_MATERIAL);
+	glEnable(GL_RESCALE_NORMAL); //important if things are being scaled as OpenGL also scales normals ( for proper lighting they need to be normalized )
 	
-	mParams = params::InterfaceGl( "3D_Scene_Base", Vec2i( 225, 250 ) );
+	mParams = params::InterfaceGl( "3D_Scene_Base", Vec2i( 225, 125 ) );
 	mParams.addParam( "Framerate", &mCurrFramerate, "", true );
 	mParams.addParam( "Eye Distance", &mCameraDistance, "min=-100.0 max=-5.0 step=1.0 keyIncr== keyDecr=-");
 	mParams.addParam( "Lighting On", &mLightingOn, "key=l");
-	//mParams.addParam( "Light View On", &mViewFromLight, "key=v");
 	mParams.addParam( "Show/Hide Params", &mShowParams, "key=x");
 	mParams.addSeparator();
-	mParams.addParam( "RENDER MODE STANDARD", &mRenderMode0 );
-	mParams.addParam( "RENDER MODE SSAO", &mRenderMode1 );
-	mParams.addParam( "RENDER MODE NORMAL", &mRenderMode2 );
 	
 	mCurrFramerate = 0.0f;
 	mLightingOn = true;
 	mViewFromLight = false;
 	mShowParams = true;
-	mRenderMode0 = true;
-	mRenderMode1 = false;
-	mRenderMode2 = true;
 	
 	//create camera
 	mCameraDistance = CAM_POSITION_INIT.z;
@@ -208,6 +212,7 @@ void Base_ThreeD_ProjectApp::setup()
 	sphereMaterial.setDiffuse( orange ) ;	
 	sphereMaterial.setShininess( 35.0f );	
 	
+    //using DisplayLists for simplicity but highly recommend only use VBO's for serious work ( as DisplayLists will be deprecated soon ... and speed difference in now negligible )
 	mTorus = gl::DisplayList( GL_COMPILE );
 	mTorus.newList();
 	gl::drawTorus( 1.0f, 0.3f, 32, 64 );
@@ -232,19 +237,31 @@ void Base_ThreeD_ProjectApp::setup()
 	mSphere.endList();
 	mSphere.setMaterial( sphereMaterial );
 	
+    //noise texture required for SSAO calculations
 	mRandomNoise = gl::Texture( loadImage( loadResource( NOISE_SAMPLER ) ) );
 	
 	initFBOs();
 	initShaders();
 }
 
+/* 
+ * @Description: update
+ * @param: none
+ * @return: none
+ */
 void Base_ThreeD_ProjectApp::update()
 {
 	mCurrFramerate = getAverageFps();
 }
 
+/* 
+ * @Description: draw
+ * @param: none
+ * @return: none
+ */
 void Base_ThreeD_ProjectApp::draw()
 {
+    //clear depth and color every frame
 	glClearColor( 0.5f, 0.5f, 0.5f, 1 );
 	glClearDepth(1.0f);
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -255,14 +272,19 @@ void Base_ThreeD_ProjectApp::draw()
 	
 	renderScreenSpace();
 	
-	glFinish(); //want to make sure everything is finished before jumping to UI
+	//glFinish(); //want to make sure everything is finished before jumping to UI ... slows down program big-time. Is totally unecessary ...
+    
 	if (mShowParams)
 		params::InterfaceGl::draw();
 }
 
+/* 
+ * @Description: render scene to FBO texture
+ * @param: none
+ * @return: none
+ */
 void Base_ThreeD_ProjectApp::renderSceneToFBO()
 {
-	//render out main scene to FBO
 	mScreenSpace1.bindFramebuffer();
 
 	glClearColor( 0.5f, 0.5f, 0.5f, 1 );
@@ -291,131 +313,11 @@ void Base_ThreeD_ProjectApp::renderSceneToFBO()
 	glDisable(GL_LIGHTING);
 }
 
-void Base_ThreeD_ProjectApp::renderScreenSpace()
-{
-	//render out main scene
-//	CameraPersp cam( getWindowWidth(), getWindowHeight(), 60.0f );
-//	cam.setPerspective( 60, getWindowAspectRatio(), 1, 1000 );
-//	cam.lookAt( Vec3f( 2.6f, 1.6f, -2.6f ), Vec3f::zero() );
-//	gl::setMatrices( cam );
-	
-	// set the viewport to match our window
-//	gl::setViewport( getWindowBounds() );
-	
-	// use the scene we rendered into the FBO as a texture
-	glEnable( GL_TEXTURE_2D );
-	
-	// show the FBO texture in the upper left corner
-	gl::setMatricesWindow( getWindowSize() );
-	
-	switch (RENDER_MODE) 
-	{
-		case SHOW_STANDARD_VIEW:
-		{
-			mScreenSpace1.getTexture(0).bind(0);
-				gl::drawSolidRect( Rectf( 0, getWindowHeight(), getWindowWidth(), 0) );
-			mScreenSpace1.getTexture(0).unbind(0);
-		}
-		break;
-			
-		case SHOW_SSAO:
-		{
-			mSSAOMap.getTexture().bind(0);
-			
-			mBasicBlender.bind();
-			
-			mBasicBlender.uniform("ssaoTex", 0 );
-			mBasicBlender.uniform("baseTex", 0 );
-			gl::drawSolidRect( Rectf( 0, getWindowHeight(), getWindowWidth(), 0) );
-			
-			mBasicBlender.unbind();
-			
-			mSSAOMap.getTexture().unbind(0);
-		}
-		break;
-			
-		case SHOW_NORMALMAP:
-		{
-			mNormalDepthMap.getTexture().bind(0);
-				gl::drawSolidRect( Rectf( 0, getWindowHeight(), getWindowWidth(), 0) );
-			mNormalDepthMap.getTexture().unbind(0);
-		}
-		break;
-			
-		case SHOW_FINAL_SCENE:
-		{
-			pingPongBlur();
-			
-			gl::setMatricesWindow( getWindowSize() );
-			
-			mPingPongBlurV.getTexture().bind(0);
-			mScreenSpace1.getTexture().bind(1);
-			
-			mBasicBlender.bind();
-			
-			mBasicBlender.uniform("ssaoTex", 0 );
-			mBasicBlender.uniform("baseTex", 1 );
-			gl::drawSolidRect( Rectf( 0, getWindowHeight(), getWindowWidth(), 0) );
-			
-			mBasicBlender.unbind();
-			
-			mScreenSpace1.getTexture().unbind(1);
-			mPingPongBlurV.getTexture().unbind(0);
-		}
-			break;
-	}
-	
-	glDisable(GL_TEXTURE_2D);
-}
-
-void Base_ThreeD_ProjectApp::pingPongBlur()
-{
-	//render horizontal blue first
-	gl::setViewport( mPingPongBlurH.getBounds() );
-	
-	mPingPongBlurH.bindFramebuffer();
-	
-	glClearColor( 0.5f, 0.5f, 0.5f, 1 );
-	glClearDepth(1.0f);
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-	
-	gl::setMatricesWindow( mPingPongBlurH.getSize() );
-	
-	mSSAOMap.getTexture().bind(0);
-	mHBlurShader.bind();
-	mHBlurShader.uniform("RTScene", 0);
-		gl::drawSolidRect( Rectf( 0, 0, getWindowWidth(), getWindowHeight()) );
-	mHBlurShader.unbind();
-	mSSAOMap.getTexture().unbind(0);
-	
-	mPingPongBlurH.unbindFramebuffer();
-	
-	//gl::setViewport( getWindowBounds() );
-	
-	
-	//now render vertical blur
-	gl::setViewport( mPingPongBlurV.getBounds() );
-	
-	mPingPongBlurV.bindFramebuffer();
-	
-	glClearColor( 0.5f, 0.5f, 0.5f, 1 );
-	glClearDepth(1.0f);
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-	
-	gl::setMatricesWindow( mPingPongBlurV.getSize() );
-	
-	mPingPongBlurH.getTexture().bind(0);
-	mHBlurShader.bind();
-	mHBlurShader.uniform("RTBlurH", 0);
-	gl::drawSolidRect( Rectf( 0, 0, getWindowWidth(), getWindowHeight()) );
-	mHBlurShader.unbind();
-	mPingPongBlurH.getTexture().unbind(0);
-	
-	mPingPongBlurV.unbindFramebuffer();
-	
-	gl::setViewport( getWindowBounds() );
-}
-
+/* 
+ * @Description: render scene normals to FBO ( required for SSAO calculations )
+ * @param: none
+ * @return: none
+ */
 void Base_ThreeD_ProjectApp::renderNormalsDepthToFBO()
 {
 	gl::setViewport( mNormalDepthMap.getBounds() );
@@ -427,13 +329,6 @@ void Base_ThreeD_ProjectApp::renderNormalsDepthToFBO()
 	glClearDepth(1.0f);
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	
-//	mEye = mCam->getEyePoint();
-//	mEye.normalize();
-//	mEye = mEye * abs(mCameraDistance);
-//	mCam->lookAt( mEye, mCenter, mUp );
-//	gl::setMatrices( *mCam );
-//	mLight->update( *mCam );
-	
 	mNormalDepthShader.bind();
 		drawTestObjects();
 	mNormalDepthShader.unbind();
@@ -443,6 +338,11 @@ void Base_ThreeD_ProjectApp::renderNormalsDepthToFBO()
 	gl::setViewport( getWindowBounds() );
 }
 
+/* 
+ * @Description: render SSAO now - woohoo!
+ * @param: KeyEvent
+ * @return: none
+ */
 void Base_ThreeD_ProjectApp::renderSSAOToFBO()
 {
 	gl::setViewport( mSSAOMap.getBounds() );
@@ -464,6 +364,7 @@ void Base_ThreeD_ProjectApp::renderSSAOToFBO()
 	mSSAOShader.uniform("rnm", 1 );
 	mSSAOShader.uniform("normalMap", 2 );
 
+    //look at shader and see you can set these through the client if you so desire.
 //	mSSAOShader.uniform("rnm", 1 );
 //	mSSAOShader.uniform("normalMap", 2 );	
 //	mSSAOShader.uniform("totStrength", 1.38f);
@@ -495,68 +396,172 @@ void Base_ThreeD_ProjectApp::renderSSAOToFBO()
 	gl::setViewport( getWindowBounds() );
 }
 
+/* 
+ * @Description: need to blur[the SSAO texture] horizonatally then vertically (for shader performance reasons). Called ping-ponging as it one FBO drawn to another
+ * @param: KeyEvent
+ * @return: none
+ */
+void Base_ThreeD_ProjectApp::pingPongBlur()
+{
+	//render horizontal blue first
+	gl::setViewport( mPingPongBlurH.getBounds() );
+	
+	mPingPongBlurH.bindFramebuffer();
+	
+	glClearColor( 0.5f, 0.5f, 0.5f, 1 );
+	glClearDepth(1.0f);
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	
+	gl::setMatricesWindow( mPingPongBlurH.getSize() );
+	
+	mSSAOMap.getTexture().bind(0);
+	mHBlurShader.bind();
+	mHBlurShader.uniform("RTScene", 0);
+    gl::drawSolidRect( Rectf( 0, 0, getWindowWidth(), getWindowHeight()) );
+	mHBlurShader.unbind();
+	mSSAOMap.getTexture().unbind(0);
+	
+	mPingPongBlurH.unbindFramebuffer();
+	
+	//gl::setViewport( getWindowBounds() ); //redundant
+	
+	//now render vertical blur
+	gl::setViewport( mPingPongBlurV.getBounds() );
+	
+	mPingPongBlurV.bindFramebuffer();
+	
+	glClearColor( 0.5f, 0.5f, 0.5f, 1 );
+	glClearDepth(1.0f);
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	
+	gl::setMatricesWindow( mPingPongBlurV.getSize() );
+	
+	mPingPongBlurH.getTexture().bind(0);
+	mHBlurShader.bind();
+	mHBlurShader.uniform("RTBlurH", 0);
+	gl::drawSolidRect( Rectf( 0, 0, getWindowWidth(), getWindowHeight()) );
+	mHBlurShader.unbind();
+	mPingPongBlurH.getTexture().unbind(0);
+	
+	mPingPongBlurV.unbindFramebuffer();
+	
+	gl::setViewport( getWindowBounds() );
+}
+
+/* 
+ * @Description: render the final scene ( using all prior created FBOs and combine )
+ * @param: none
+ * @return: none
+ */
+void Base_ThreeD_ProjectApp::renderScreenSpace()
+{	
+	// use the scene we rendered into the FBO as a texture
+	glEnable( GL_TEXTURE_2D );
+	
+	// show the FBO texture in the upper left corner
+	gl::setMatricesWindow( getWindowSize() );
+	
+	switch (RENDER_MODE) 
+	{
+		case SHOW_STANDARD_VIEW:
+		{
+			mScreenSpace1.getTexture(0).bind(0);
+            gl::drawSolidRect( Rectf( 0, getWindowHeight(), getWindowWidth(), 0) );
+			mScreenSpace1.getTexture(0).unbind(0);
+		}
+            break;
+			
+		case SHOW_SSAO:
+		{
+			mSSAOMap.getTexture().bind(0);
+			
+			mBasicBlender.bind();
+			
+			mBasicBlender.uniform("ssaoTex", 0 );
+			mBasicBlender.uniform("baseTex", 0 );
+			gl::drawSolidRect( Rectf( 0, getWindowHeight(), getWindowWidth(), 0) );
+			
+			mBasicBlender.unbind();
+			
+			mSSAOMap.getTexture().unbind(0);
+		}
+            break;
+			
+		case SHOW_NORMALMAP:
+		{
+			mNormalDepthMap.getTexture().bind(0);
+            gl::drawSolidRect( Rectf( 0, getWindowHeight(), getWindowWidth(), 0) );
+			mNormalDepthMap.getTexture().unbind(0);
+		}
+            break;
+			
+		case SHOW_FINAL_SCENE:
+		{
+			pingPongBlur();
+			
+			gl::setMatricesWindow( getWindowSize() );
+			
+			mPingPongBlurV.getTexture().bind(0);
+			mScreenSpace1.getTexture().bind(1);
+			
+			mBasicBlender.bind();
+			
+			mBasicBlender.uniform("ssaoTex", 0 );
+			mBasicBlender.uniform("baseTex", 1 );
+			gl::drawSolidRect( Rectf( 0, getWindowHeight(), getWindowWidth(), 0) );
+			
+			mBasicBlender.unbind();
+			
+			mScreenSpace1.getTexture().unbind(1);
+			mPingPongBlurV.getTexture().unbind(0);
+		}
+			break;
+	}
+	
+	glDisable(GL_TEXTURE_2D);
+}
+
+/* 
+ * @Description: don't use but i like to have it available
+ * @param: MouseEvent
+ * @return: none
+ */
 void Base_ThreeD_ProjectApp::mouseDown( MouseEvent event )
 {}
 
-void Base_ThreeD_ProjectApp::keyDown( app::KeyEvent event ) 
+/* 
+ * @Description: Listen for key presses
+ * @param: KeyEvent
+ * @return: none
+ */
+void Base_ThreeD_ProjectApp::keyDown( KeyEvent event ) 
 {
 	//printf("%i \n", event.getCode());
 	
 	switch ( event.getCode() ) 
 	{
-		case 49:
+		case KeyEvent::KEY_1:
 		{
 			RENDER_MODE = 0;
-			mRenderMode0 = true;
-			mRenderMode1 = false;
-			mRenderMode2 = false;
-			mRenderMode3 = false;
-			mRenderMode4 = false;
 		}
 			break;
-		case 50:
+		case KeyEvent::KEY_2:
 		{
 			RENDER_MODE = 1;
-			mRenderMode0 = false;
-			mRenderMode1 = true;
-			mRenderMode2 = false;
-			mRenderMode3 = false;
-			mRenderMode4 = false;
 		}
 			break;
-		case 51:
+		case KeyEvent::KEY_3:
 		{
 			RENDER_MODE = 2;
-			mRenderMode0 = false;
-			mRenderMode1 = false;
-			mRenderMode2 = true;
-			mRenderMode3 = false;
-			mRenderMode4 = false;
 		}
 			break;
-		case 52:
+		case KeyEvent::KEY_4:
 		{
 			RENDER_MODE = 3;
-			mRenderMode0 = false;
-			mRenderMode1 = false;
-			mRenderMode2 = false;
-			mRenderMode3 = true;
-			mRenderMode4 = false;
-		}
-			break;	
-		case 53:
-		{
-			RENDER_MODE = 4;
-			mRenderMode0 = false;
-			mRenderMode1 = false;
-			mRenderMode2 = false;
-			mRenderMode3 = false;
-			mRenderMode4 = true;
 		}
 			break;		
 			
-		case 273:
-			//up
+		case KeyEvent::KEY_UP:
 		{
 			Vec3f lightPos = mLight->getPosition();
 			if ( lightPos.y > 0 )
@@ -570,8 +575,7 @@ void Base_ThreeD_ProjectApp::keyDown( app::KeyEvent event )
 			mLightRef->update( *mCam );
 		}
 			break;
-		case 274:
-			//down
+		case KeyEvent::KEY_DOWN:
 		{
 			Vec3f lightPos = mLight->getPosition();
 			if ( lightPos.y > 0 )
@@ -585,8 +589,7 @@ void Base_ThreeD_ProjectApp::keyDown( app::KeyEvent event )
 			mLightRef->update( *mCam );
 		}
 			break;
-		case 276:
-			//left
+		case KeyEvent::KEY_LEFT:
 		{
 			Vec3f lightPos = mLight->getPosition();
 			if ( lightPos.y > 0 )
@@ -600,8 +603,7 @@ void Base_ThreeD_ProjectApp::keyDown( app::KeyEvent event )
 			mLightRef->update( *mCam );
 		}
 			break;
-		case 275:
-			//right
+		case KeyEvent::KEY_RIGHT:
 		{
 			Vec3f lightPos = mLight->getPosition();
 			if ( lightPos.y > 0 )
@@ -615,8 +617,7 @@ void Base_ThreeD_ProjectApp::keyDown( app::KeyEvent event )
 			mLightRef->update( *mCam );
 		}
 			break;
-		case 119:
-			//W
+		case KeyEvent::KEY_w:
 		{
 			mEye = mCam->getEyePoint();
 			mEye = Quatf( Vec3f(1, 0, 0), -0.03f ) * mEye;
@@ -625,8 +626,7 @@ void Base_ThreeD_ProjectApp::keyDown( app::KeyEvent event )
 			mLightRef->update( *mCam );
 		}
 			break;
-		case 97:
-			//A
+		case KeyEvent::KEY_a:
 		{
 			mEye = mCam->getEyePoint();
 			mEye = Quatf( Vec3f(0, 1, 0), 0.03f ) * mEye;
@@ -635,8 +635,7 @@ void Base_ThreeD_ProjectApp::keyDown( app::KeyEvent event )
 			mLightRef->update( *mCam );
 		}
 			break;	
-		case 115:
-			//S
+		case KeyEvent::KEY_s:
 		{
 			mEye = mCam->getEyePoint();
 			mEye = Quatf( Vec3f(1, 0, 0), 0.03f ) * mEye;
@@ -645,8 +644,7 @@ void Base_ThreeD_ProjectApp::keyDown( app::KeyEvent event )
 			mLightRef->update( *mCam );
 		}
 			break;
-		case 100:
-			//D
+		case KeyEvent::KEY_d:
 		{
 			mEye = mCam->getEyePoint();
 			mEye = Quatf( Vec3f(0, 1, 0), -0.03f ) * mEye;
@@ -660,6 +658,11 @@ void Base_ThreeD_ProjectApp::keyDown( app::KeyEvent event )
 	}
 }
 
+/* 
+ * @Description: drawing all objects in scene here
+ * @param: none
+ * @return: none
+ */
 void Base_ThreeD_ProjectApp::drawTestObjects()
 {
 	//glColor3f(1.0, 0.2, 0.2);
@@ -689,6 +692,11 @@ void Base_ThreeD_ProjectApp::drawTestObjects()
 	gl::popMatrices();
 }
 
+/* 
+ * @Description: initialize all shaders here
+ * @param: none
+ * @return: none
+ */
 void Base_ThreeD_ProjectApp::initShaders()
 {
 	mSSAOShader			= gl::GlslProg( loadResource( SSAO_VERT ), loadResource( SSAO_FRAG_LIGHT ) );
@@ -698,12 +706,19 @@ void Base_ThreeD_ProjectApp::initShaders()
 	mVBlurShader		= gl::GlslProg( loadResource( BLUR_V_VERT ), loadResource( BLUR_V_FRAG ) );
 }
 
+/* 
+ * @Description: initialize all FBOs here
+ * @param: none
+ * @return: none
+ */
 void Base_ThreeD_ProjectApp::initFBOs()
 {		
+    //being lazy so settings are set to high for all texture ( generally the only one that needs to be 16-bit is the SSAO FBO so that no moire precision problems are seen )
 	gl::Fbo::Format format;
 	//format.setDepthInternalFormat( GL_DEPTH_COMPONENT32 );
 	format.setColorInternalFormat( GL_RGBA16F_ARB );
-	//	format.setSamples( 4 ); // enable 4x antialiasing
+	format.setSamples( 4 ); // enable 4x antialiasing
+    
 	//init screen space render
 	mScreenSpace1	= gl::Fbo( getWindowWidth(), getWindowHeight(), format );
 	mNormalDepthMap	= gl::Fbo( getWindowWidth()/2.0f, getWindowHeight()/2.0f, format );
