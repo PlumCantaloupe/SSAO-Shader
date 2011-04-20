@@ -3,16 +3,16 @@ v3
 r1
 cCheck dependencies
 cProcessInfoPlistFile /Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app/Contents/Info.plist Info.plist
-cCpResource ../resources/CinderApp.icns build/Debug/Base_ThreeD_Project.app/Contents/Resources/CinderApp.icns
 cCpResource ../resources/shaders/SSAO_vert.glsl build/Debug/Base_ThreeD_Project.app/Contents/Resources/SSAO_vert.glsl
+cCpResource ../resources/CinderApp.icns build/Debug/Base_ThreeD_Project.app/Contents/Resources/CinderApp.icns
 cCpResource ../resources/shaders/NormalDepthTexCreate_frag.glsl build/Debug/Base_ThreeD_Project.app/Contents/Resources/NormalDepthTexCreate_frag.glsl
 cCpResource ../resources/shaders/NormalDepthTexCreate_vert.glsl build/Debug/Base_ThreeD_Project.app/Contents/Resources/NormalDepthTexCreate_vert.glsl
 cCpResource ../resources/shaders/BasicBlender_frag.glsl build/Debug/Base_ThreeD_Project.app/Contents/Resources/BasicBlender_frag.glsl
 cCpResource ../resources/shaders/BasicBlender_vert.glsl build/Debug/Base_ThreeD_Project.app/Contents/Resources/BasicBlender_vert.glsl
 cCpResource ../resources/textures/noise.png build/Debug/Base_ThreeD_Project.app/Contents/Resources/noise.png
 cCpResource ../resources/shaders/SSAOL_frag.glsl build/Debug/Base_ThreeD_Project.app/Contents/Resources/SSAOL_frag.glsl
-cCpResource ../resources/shaders/Blur_h_frag.glsl build/Debug/Base_ThreeD_Project.app/Contents/Resources/Blur_h_frag.glsl
 cCpResource ../resources/shaders/Blur_h_vert.glsl build/Debug/Base_ThreeD_Project.app/Contents/Resources/Blur_h_vert.glsl
+cCpResource ../resources/shaders/Blur_h_frag.glsl build/Debug/Base_ThreeD_Project.app/Contents/Resources/Blur_h_frag.glsl
 cCpResource ../resources/shaders/Blur_v_frag.glsl build/Debug/Base_ThreeD_Project.app/Contents/Resources/Blur_v_frag.glsl
 cCpResource ../resources/shaders/Blur_v_vert.glsl build/Debug/Base_ThreeD_Project.app/Contents/Resources/Blur_v_vert.glsl
 cCpResource ../resources/textures/random.png build/Debug/Base_ThreeD_Project.app/Contents/Resources/random.png
@@ -98,9 +98,9 @@ t1295454011
 s42993
 
 N/Developer/CinderProjects/SSAO_TEST/xcode/../src/Base_ThreeD_ProjectApp.cpp
-c000000004DAEDC180000000000004C45
-t1303305240
-s19525
+c000000004DAEE03A0000000000004C4A
+t1303306298
+s19530
 i"cinder/app/AppBasic.h"
 i"cinder/gl/gl.h"
 i"cinder/Camera.h"
@@ -126,11 +126,11 @@ t1303303047
 s151
 
 N/Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Objects-normal/i386/Base_ThreeD_ProjectApp.o
-t1303304233
-s567072
+t1303306350
+s566636
 
 N/Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app
-t1303304234
+t1303306350
 s102
 
 N/Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app/Contents/Info.plist
@@ -138,8 +138,8 @@ t1303303048
 s1260
 
 N/Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app/Contents/MacOS/Base_ThreeD_Project
-t1303304234
-s4731560
+t1303306350
+s4731692
 
 N/Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app/Contents/PkgInfo
 t1303303048
@@ -6260,11 +6260,11 @@ r0
 
 CCheck dependencies
 r0
-lSLF03#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesb01c3d99135fb341^b6304799135fb341^---0#1#0#--18"Check dependencies
+lSLF03#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies6de67cf6175fb341^b2d87ef6175fb341^---0#1#0#--18"Check dependencies
 
 CCompileC build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Objects-normal/i386/Base_ThreeD_ProjectApp.o /Developer/CinderProjects/SSAO_TEST/xcode/../src/Base_ThreeD_ProjectApp.cpp normal i386 c++ com.apple.compilers.llvmgcc42
-s324998041.313637
-e324998044.299405
+s324999147.788483
+e324999150.506690
 r1
 xCompileC
 xbuild/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Objects-normal/i386/Base_ThreeD_ProjectApp.o
@@ -6273,7 +6273,7 @@ xnormal
 xi386
 xc++
 xcom.apple.compilers.llvmgcc42
-lSLF03#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection83"Compile /Developer/CinderProjects/SSAO_TEST/xcode/../src/Base_ThreeD_ProjectApp.cpp2a725099135fb341^6aa54c9c135fb341^---0#0#0#-19%DVTDocumentLocation2@91"file://localhost/Developer/CinderProjects/SSAO_TEST/xcode/../src/Base_ThreeD_ProjectApp.cpp0000000000000000^2052"CompileC build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Objects-normal/i386/Base_ThreeD_ProjectApp.o ../src/Base_ThreeD_ProjectApp.cpp normal i386 c++ com.apple.compilers.llvmgcc42    cd /Developer/CinderProjects/SSAO_TEST/xcode    setenv LANG en_US.US-ASCII    /Developer/usr/bin/llvm-gcc-4.2 -x c++ -arch i386 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mmacosx-version-min=10.5 -gdwarf-2 -fvisibility-inlines-hidden -iquote /Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Base_ThreeD_Project-generated-files.hmap -I/Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Base_ThreeD_Project-own-target-headers.hmap -I/Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Base_ThreeD_Project-all-target-headers.hmap -iquote /Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Base_ThreeD_Project-project-headers.hmap -iquote/Developer/cinder_0.8.2_mac/include -iquote../include -I/Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/include -I/Developer/cinder_0.8.2_mac/boost -I/Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/DerivedSources/i386 -I/Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/DerivedSources -F/Developer/CinderProjects/SSAO_TEST/xcode/build/Debug -include /var/folders/K2/K2knIwihGQakxy1wPVkRTk+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Base_ThreeD_Project_Prefix-avrdtrojfsybsldmowezknyzqmqn/Base_ThreeD_Project_Prefix.pch -c /Developer/CinderProjects/SSAO_TEST/xcode/../src/Base_ThreeD_ProjectApp.cpp -o /Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Objects-normal/i386/Base_ThreeD_ProjectApp.o
+lSLF03#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection83"Compile /Developer/CinderProjects/SSAO_TEST/xcode/../src/Base_ThreeD_ProjectApp.cppe90acaeb175fb341^1cb681ee175fb341^---0#0#0#-19%DVTDocumentLocation2@91"file://localhost/Developer/CinderProjects/SSAO_TEST/xcode/../src/Base_ThreeD_ProjectApp.cpp0000000000000000^2052"CompileC build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Objects-normal/i386/Base_ThreeD_ProjectApp.o ../src/Base_ThreeD_ProjectApp.cpp normal i386 c++ com.apple.compilers.llvmgcc42    cd /Developer/CinderProjects/SSAO_TEST/xcode    setenv LANG en_US.US-ASCII    /Developer/usr/bin/llvm-gcc-4.2 -x c++ -arch i386 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mmacosx-version-min=10.5 -gdwarf-2 -fvisibility-inlines-hidden -iquote /Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Base_ThreeD_Project-generated-files.hmap -I/Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Base_ThreeD_Project-own-target-headers.hmap -I/Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Base_ThreeD_Project-all-target-headers.hmap -iquote /Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Base_ThreeD_Project-project-headers.hmap -iquote/Developer/cinder_0.8.2_mac/include -iquote../include -I/Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/include -I/Developer/cinder_0.8.2_mac/boost -I/Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/DerivedSources/i386 -I/Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/DerivedSources -F/Developer/CinderProjects/SSAO_TEST/xcode/build/Debug -include /var/folders/K2/K2knIwihGQakxy1wPVkRTk+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Base_ThreeD_Project_Prefix-avrdtrojfsybsldmowezknyzqmqn/Base_ThreeD_Project_Prefix.pch -c /Developer/CinderProjects/SSAO_TEST/xcode/../src/Base_ThreeD_ProjectApp.cpp -o /Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Objects-normal/i386/Base_ThreeD_ProjectApp.o
 
 CCpResource ../resources/CinderApp.icns build/Debug/Base_ThreeD_Project.app/Contents/Resources/CinderApp.icns
 s324995848.166776
@@ -6402,14 +6402,14 @@ xbuild/Debug/Base_ThreeD_Project.app/Contents/Resources/random.png
 lSLF03#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection70"Copy build/Debug/Base_ThreeD_Project.app/Contents/Resources/random.pngc6a847080b5fb341^664f4a080b5fb341^---0#0#0#-19%DVTDocumentLocation2@123"file://localhost/Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app/Contents/Resources/random.png0000204d2205f041^430"CpResource ../resources/textures/random.png build/Debug/Base_ThreeD_Project.app/Contents/Resources/random.png    cd /Developer/CinderProjects/SSAO_TEST/xcode    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks /Developer/CinderProjects/SSAO_TEST/xcode/../resources/textures/random.png /Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app/Contents/Resources
 
 CLd /Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app/Contents/MacOS/Base_ThreeD_Project normal i386
-s324998044.299634
-e324998044.666162
+s324999150.507475
+e324999150.844989
 r1
 xLd
 x/Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app/Contents/MacOS/Base_ThreeD_Project
 xnormal
 xi386
-lSLF03#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection117"Link /Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app/Contents/MacOS/Base_ThreeD_Project36c84c9c135fb341^b989aa9c135fb341^---0#0#0#--933"Ld build/Debug/Base_ThreeD_Project.app/Contents/MacOS/Base_ThreeD_Project normal i386    cd /Developer/CinderProjects/SSAO_TEST/xcode    setenv MACOSX_DEPLOYMENT_TARGET 10.5    /Developer/usr/bin/llvm-g++-4.2 -arch i386 -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Developer/CinderProjects/SSAO_TEST/xcode/build/Debug -F/Developer/CinderProjects/SSAO_TEST/xcode/build/Debug -filelist /Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Objects-normal/i386/Base_ThreeD_Project.LinkFileList -mmacosx-version-min=10.5 /Developer/cinder_0.8.2_mac/lib/libcinder_d.a -framework Cocoa -framework OpenGL -framework Carbon -framework CoreVideo -framework QTKit -framework QuickTime -framework Accelerate -framework AudioToolbox -framework AudioUnit -framework CoreAudio -o /Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app/Contents/MacOS/Base_ThreeD_Project
+lSLF03#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection117"Link /Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app/Contents/MacOS/Base_ThreeD_Project61fb81ee175fb341^3351d8ee175fb341^---0#0#0#--933"Ld build/Debug/Base_ThreeD_Project.app/Contents/MacOS/Base_ThreeD_Project normal i386    cd /Developer/CinderProjects/SSAO_TEST/xcode    setenv MACOSX_DEPLOYMENT_TARGET 10.5    /Developer/usr/bin/llvm-g++-4.2 -arch i386 -isysroot /Developer/SDKs/MacOSX10.6.sdk -L/Developer/CinderProjects/SSAO_TEST/xcode/build/Debug -F/Developer/CinderProjects/SSAO_TEST/xcode/build/Debug -filelist /Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Objects-normal/i386/Base_ThreeD_Project.LinkFileList -mmacosx-version-min=10.5 /Developer/cinder_0.8.2_mac/lib/libcinder_d.a -framework Cocoa -framework OpenGL -framework Carbon -framework CoreVideo -framework QTKit -framework QuickTime -framework Accelerate -framework AudioToolbox -framework AudioUnit -framework CoreAudio -o /Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app/Contents/MacOS/Base_ThreeD_Project
 
 CProcessInfoPlistFile /Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app/Contents/Info.plist Info.plist
 s324995848.082813
@@ -6437,10 +6437,10 @@ xcom.apple.compilers.llvmgcc42
 lSLF03#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection41"Precompile Base_ThreeD_Project_Prefix.pchbedd4a080b5fb341^26e2f1080b5fb341^---0#0#0#-19%DVTDocumentLocation2@88"file://localhost/Developer/CinderProjects/SSAO_TEST/xcode/Base_ThreeD_Project_Prefix.pch0000000000000000^1981"ProcessPCH++ /var/folders/K2/K2knIwihGQakxy1wPVkRTk+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Base_ThreeD_Project_Prefix-avrdtrojfsybsldmowezknyzqmqn/Base_ThreeD_Project_Prefix.pch.gch Base_ThreeD_Project_Prefix.pch normal i386 c++ com.apple.compilers.llvmgcc42    cd /Developer/CinderProjects/SSAO_TEST/xcode    setenv LANG en_US.US-ASCII    /Developer/usr/bin/llvm-gcc-4.2 -x c++-header -arch i386 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/SDKs/MacOSX10.6.sdk -fasm-blocks -mmacosx-version-min=10.5 -gdwarf-2 -fvisibility-inlines-hidden -iquote /Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Base_ThreeD_Project-generated-files.hmap -I/Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Base_ThreeD_Project-own-target-headers.hmap -I/Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Base_ThreeD_Project-all-target-headers.hmap -iquote /Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/Base_ThreeD_Project-project-headers.hmap -iquote/Developer/cinder_0.8.2_mac/include -iquote../include -I/Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/include -I/Developer/cinder_0.8.2_mac/boost -I/Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/DerivedSources/i386 -I/Developer/CinderProjects/SSAO_TEST/xcode/build/Base_ThreeD_Project.build/Debug/Base_ThreeD_Project.build/DerivedSources -F/Developer/CinderProjects/SSAO_TEST/xcode/build/Debug -c /Developer/CinderProjects/SSAO_TEST/xcode/Base_ThreeD_Project_Prefix.pch -o /var/folders/K2/K2knIwihGQakxy1wPVkRTk+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Base_ThreeD_Project_Prefix-avrdtrojfsybsldmowezknyzqmqn/Base_ThreeD_Project_Prefix.pch.gch
 
 CTouch /Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app
-s324998044.668179
-e324998044.675092
+s324999150.846996
+e324999150.853715
 r1
 xTouch
 x/Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app
-lSLF03#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection83"Touch /Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.appea20ab9c135fb341^f6d2ac9c135fb341^---0#0#0#--191"Touch build/Debug/Base_ThreeD_Project.app    cd /Developer/CinderProjects/SSAO_TEST/xcode    /usr/bin/touch -c /Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app
+lSLF03#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection83"Touch /Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app46ebd8ee175fb341^ca8ddaee175fb341^---0#0#0#--191"Touch build/Debug/Base_ThreeD_Project.app    cd /Developer/CinderProjects/SSAO_TEST/xcode    /usr/bin/touch -c /Developer/CinderProjects/SSAO_TEST/xcode/build/Debug/Base_ThreeD_Project.app
 

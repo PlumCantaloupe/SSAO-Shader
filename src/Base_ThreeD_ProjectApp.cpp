@@ -138,7 +138,7 @@ void Base_ThreeD_ProjectApp::prepareSettings( Settings *settings )
  */
 void Base_ThreeD_ProjectApp::setup()
 {
-	RENDER_MODE = 0;
+	RENDER_MODE = 3;
 	
 	glEnable( GL_LIGHTING );
 	glEnable( GL_DEPTH_TEST );
@@ -150,6 +150,7 @@ void Base_ThreeD_ProjectApp::setup()
 	mParams.addParam( "Lighting On", &mLightingOn, "key=l");
 	mParams.addParam( "Show/Hide Params", &mShowParams, "key=x");
 	mParams.addSeparator();
+    
 	
 	mCurrFramerate = 0.0f;
 	mLightingOn = true;
