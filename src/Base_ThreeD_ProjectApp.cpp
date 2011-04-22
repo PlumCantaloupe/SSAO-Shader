@@ -31,69 +31,69 @@ enum
 //being lazy and keeping not putting header in another file
 class Base_ThreeD_ProjectApp : public AppBasic 
 {
-	public:
-		Base_ThreeD_ProjectApp();
-		virtual ~Base_ThreeD_ProjectApp();
-		void prepareSettings( Settings *settings );
-		
-		void setup();
-		void update();
-		void draw();
-		
-		void mouseDown( MouseEvent event );	
-		void keyDown( app::KeyEvent event ); 
-	
-        //render functions ( when looking to optimize GPU look here ... )
-		void drawTestObjects();
-		void renderSceneToFBO();
-		void renderNormalsDepthToFBO();
-		void renderSSAOToFBO();	
-		void pingPongBlur();	
-        void renderScreenSpace();
-        
-        void initShaders();
-        void initFBOs();
+public:
+    Base_ThreeD_ProjectApp();
+    virtual ~Base_ThreeD_ProjectApp();
+    void prepareSettings( Settings *settings );
     
-	protected:
+    void setup();
+    void update();
+    void draw();
+    
+    void mouseDown( MouseEvent event );	
+    void keyDown( app::KeyEvent event ); 
 	
-		int RENDER_MODE;
+    //render functions ( when looking to optimize GPU look here ... )
+    void drawTestObjects();
+    void renderSceneToFBO();
+    void renderNormalsDepthToFBO();
+    void renderSSAOToFBO();	
+    void pingPongBlur();	
+    void renderScreenSpace();
+    
+    void initShaders();
+    void initFBOs();
+    
+protected:
 	
-		//debug
-		cinder::params::InterfaceGl mParams;
-		bool				mShowParams;
-		float				mCurrFramerate;
-		bool				mLightingOn;
-		bool				mViewFromLight;
+    int RENDER_MODE;
 	
-		//objects
-		gl::DisplayList		mTorus, mBoard, mBox, mSphere;
+    //debug
+    cinder::params::InterfaceGl mParams;
+    bool				mShowParams;
+    float				mCurrFramerate;
+    bool				mLightingOn;
+    bool				mViewFromLight;
 	
-		//camera
-		CameraPersp			*mCam;
-		Vec3f				mEye;
-		Vec3f				mCenter;
-		Vec3f				mUp;
-		float				mCameraDistance;
+    //objects
+    gl::DisplayList		mTorus, mBoard, mBox, mSphere;
 	
-		//light
-		gl::Light			*mLight;
-		gl::Light			*mLightRef;
+    //camera
+    CameraPersp			*mCam;
+    Vec3f				mEye;
+    Vec3f				mCenter;
+    Vec3f				mUp;
+    float				mCameraDistance;
 	
-		gl::Fbo				mScreenSpace1;
-		gl::Fbo				mNormalDepthMap;
-		gl::Fbo				mSSAOMap;
-		gl::Fbo				mFinalScreenTex;
+    //light
+    gl::Light			*mLight;
+    gl::Light			*mLightRef;
 	
-		gl::Fbo				mPingPongBlurH;
-		gl::Fbo				mPingPongBlurV;
+    gl::Fbo				mScreenSpace1;
+    gl::Fbo				mNormalDepthMap;
+    gl::Fbo				mSSAOMap;
+    gl::Fbo				mFinalScreenTex;
 	
-		gl::Texture			mRandomNoise;
+    gl::Fbo				mPingPongBlurH;
+    gl::Fbo				mPingPongBlurV;
 	
-		gl::GlslProg		mSSAOShader;
-		gl::GlslProg		mNormalDepthShader;
-		gl::GlslProg		mBasicBlender;
-		gl::GlslProg		mHBlurShader;
-		gl::GlslProg		mVBlurShader;
+    gl::Texture			mRandomNoise;
+	
+    gl::GlslProg		mSSAOShader;
+    gl::GlslProg		mNormalDepthShader;
+    gl::GlslProg		mBasicBlender;
+    gl::GlslProg		mHBlurShader;
+    gl::GlslProg		mVBlurShader;
 };
 
 /* 
@@ -213,7 +213,7 @@ void Base_ThreeD_ProjectApp::setup()
 	sphereMaterial.setDiffuse( orange ) ;	
 	sphereMaterial.setShininess( 35.0f );	
 	
-    //using DisplayLists for simplicity but highly recommend only use VBO's for serious work ( as DisplayLists will be deprecated soon ... and speed difference in now negligible )
+    //using DisplayLists for simplicity but highly recommend to use VBO's for serious work ( as DisplayLists will be deprecated soon ... and speed difference in now negligible )
 	mTorus = gl::DisplayList( GL_COMPILE );
 	mTorus.newList();
 	gl::drawTorus( 1.0f, 0.3f, 32, 64 );
@@ -266,7 +266,7 @@ void Base_ThreeD_ProjectApp::draw()
 	glClearColor( 0.5f, 0.5f, 0.5f, 1 );
 	glClearDepth(1.0f);
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
+    
 	renderSceneToFBO();
 	renderNormalsDepthToFBO();
 	renderSSAOToFBO();
@@ -287,7 +287,7 @@ void Base_ThreeD_ProjectApp::draw()
 void Base_ThreeD_ProjectApp::renderSceneToFBO()
 {
 	mScreenSpace1.bindFramebuffer();
-
+    
 	glClearColor( 0.5f, 0.5f, 0.5f, 1 );
 	glClearDepth(1.0f);
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -331,7 +331,7 @@ void Base_ThreeD_ProjectApp::renderNormalsDepthToFBO()
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	
 	mNormalDepthShader.bind();
-		drawTestObjects();
+    drawTestObjects();
 	mNormalDepthShader.unbind();
 	
 	mNormalDepthMap.unbindFramebuffer();
@@ -364,28 +364,28 @@ void Base_ThreeD_ProjectApp::renderSSAOToFBO()
 	
 	mSSAOShader.uniform("rnm", 1 );
 	mSSAOShader.uniform("normalMap", 2 );
-
+    
     //look at shader and see you can set these through the client if you so desire.
-//	mSSAOShader.uniform("rnm", 1 );
-//	mSSAOShader.uniform("normalMap", 2 );	
-//	mSSAOShader.uniform("totStrength", 1.38f);
-//	mSSAOShader.uniform("strength", 0.07f);
-//	mSSAOShader.uniform("offset", 10.0f);
-//	mSSAOShader.uniform("falloff", 0.2f);
-//	mSSAOShader.uniform("rad", 0.8f);
-
-//	mSSAOShader.uniform("rnm", 1 );
-//	mSSAOShader.uniform("normalMap", 2 );
-//	mSSAOShader.uniform("farClipDist", 20.0f);
-//	mSSAOShader.uniform("screenSizeWidth", (float)getWindowWidth());
-//	mSSAOShader.uniform("screenSizeHeight", (float)getWindowHeight());
+    //	mSSAOShader.uniform("rnm", 1 );
+    //	mSSAOShader.uniform("normalMap", 2 );	
+    //	mSSAOShader.uniform("totStrength", 1.38f);
+    //	mSSAOShader.uniform("strength", 0.07f);
+    //	mSSAOShader.uniform("offset", 10.0f);
+    //	mSSAOShader.uniform("falloff", 0.2f);
+    //	mSSAOShader.uniform("rad", 0.8f);
+    
+    //	mSSAOShader.uniform("rnm", 1 );
+    //	mSSAOShader.uniform("normalMap", 2 );
+    //	mSSAOShader.uniform("farClipDist", 20.0f);
+    //	mSSAOShader.uniform("screenSizeWidth", (float)getWindowWidth());
+    //	mSSAOShader.uniform("screenSizeHeight", (float)getWindowHeight());
 	
-//	mSSAOShader.uniform("grandom", 1 );
-//	mSSAOShader.uniform("gnormals", 2 );
-	//mSSAOShader.uniform("gdepth", 1 );
-	//mSSAOShader.uniform("gdiffuse", 1 );
-		
-		gl::drawSolidRect( Rectf( 0, 0, getWindowWidth(), getWindowHeight()) );
+    //	mSSAOShader.uniform("grandom", 1 );
+    //	mSSAOShader.uniform("gnormals", 2 );
+    //	mSSAOShader.uniform("gdepth", 1 );
+    //	mSSAOShader.uniform("gdiffuse", 1 );
+    
+    gl::drawSolidRect( Rectf( 0, 0, getWindowWidth(), getWindowHeight()) );
 	
 	mSSAOShader.unbind();
 	
@@ -670,26 +670,26 @@ void Base_ThreeD_ProjectApp::drawTestObjects()
 	gl::pushMatrices();
 	glTranslatef(-2.0f, -1.0f, 0.0f);
 	glRotated(90.0f, 1, 0, 0);
-		mTorus.draw();
+    mTorus.draw();
 	gl::popMatrices();
 	
 	//glColor3f(0.4, 1.0, 0.2);
 	gl::pushMatrices();
 	glTranslatef(0.0f, -1.35f, 0.0f);
-		mBoard.draw();
+    mBoard.draw();
 	gl::popMatrices();
 	
 	//glColor3f(0.8, 0.5, 0.2);
 	gl::pushMatrices();
 	glTranslatef(0.4f, -0.3f, 0.5f);
 	glScalef(2.0f, 2.0f, 2.0f);
-		mBox.draw();
+    mBox.draw();
 	gl::popMatrices();
 	
 	//glColor3f(0.3, 0.5, 0.9);
 	gl::pushMatrices();
 	glTranslatef(0.1f, -0.56f, -1.25f);
-		mSphere.draw();
+    mSphere.draw();
 	gl::popMatrices();
 }
 
@@ -714,8 +714,7 @@ void Base_ThreeD_ProjectApp::initShaders()
  */
 void Base_ThreeD_ProjectApp::initFBOs()
 {		
-    //being lazy so settings are set to high for all texture ( generally the only one that needs to be 16-bit is the SSAO FBO so that no moire precision problems are seen )
-	gl::Fbo::Format format;
+    gl::Fbo::Format format;
 	//format.setDepthInternalFormat( GL_DEPTH_COMPONENT32 );
 	format.setColorInternalFormat( GL_RGBA16F_ARB );
 	format.setSamples( 4 ); // enable 4x antialiasing
@@ -727,7 +726,7 @@ void Base_ThreeD_ProjectApp::initFBOs()
 	mPingPongBlurV	= gl::Fbo( getWindowWidth()/2.0f, getWindowHeight()/2.0f, format );
 	mFinalScreenTex = gl::Fbo( getWindowWidth(), getWindowHeight(), format );
 	mSSAOMap		= gl::Fbo( getWindowWidth()/2.0f, getWindowHeight()/2.0f, format );
-	
+    
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );	
 }
